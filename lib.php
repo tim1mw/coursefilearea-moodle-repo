@@ -14,22 +14,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
+/*
  * repository_coursefilearea class is used to browse course files. This is a composite of the coursefiles and
  * filesystem repository code with some new code added.
  *
  * @package    repository_coursefilearea
  * @copyright 2011 Tim Williams <tmw@autotrain.org> (Modified from code originally written by Dongsheng Cai <dongsheng@moodle.com>)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-**/
+ */
 
-/**
+defined('MOODLE_INTERNAL') || die();
+
+/*
  * Core repository class
  * @copyright 2011 Tim Williams <tmw@autotrain.org> (Modified from code originally written by Dongsheng Cai <dongsheng@moodle.com>)
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class repository_coursefilearea extends repository {
-    /**
+    /*
      * Get the option names.
      * @return Array of option names.
      */
@@ -37,10 +39,10 @@ class repository_coursefilearea extends repository {
         return array('allowinternal', 'pluginname');
     }
 
-    /**
+    /*
     * Gets the current course object
     * @return The course
-    **/
+    */
     private function get_course() {
         global $CFG;
         // For Moodle 2.2 to 2.2.3+.
@@ -54,7 +56,7 @@ class repository_coursefilearea extends repository {
         return $COURSE;
     }
 
-    /**
+    /*
      * Setup repistory form.
      *
      * @param moodleform $mform Moodle form (passed by reference)
@@ -79,7 +81,7 @@ class repository_coursefilearea extends repository {
         return $this->get_listing();
     }
 
-    /**
+    /*
      * Given a path, and perhaps a search, get a list of files.
      *
      * See details on {@link http://docs.moodle.org/dev/Repository_plugins}
@@ -113,25 +115,25 @@ class repository_coursefilearea extends repository {
         $list['dynload'] = true;
         $list['nologin'] = true;
         $list['nosearch'] = true;
-        $root_path = $CFG->dataroot . "/" . $courseid . "/" . $path . "/";
-        if (!file_exists($root_path)) {
-            mkdir($root_path, $CFG->directorypermissions);
+        $rootpath = $CFG->dataroot . "/" . $courseid . "/" . $path . "/";
+        if (!file_exists($rootpath)) {
+            mkdir($rootpath, $CFG->directorypermissions);
         }
-        if ($dh = opendir($root_path)) {
+        if ($dh = opendir($rootpath)) {
             while (($file = readdir($dh)) != false) {
                 if ($file != '.' and $file != '..') {
-                    if (filetype($root_path . $file) == 'file') {
+                    if (filetype($rootpath . $file) == 'file') {
                         $list['list'][] = array('title' => $file, 'source' => $path . '/' . $file,
-                        'size' => filesize($root_path . $file), 'date' => filemtime($root_path . $file),
-                        'thumbnail' => $OUTPUT->pix_url(file_extension_icon($root_path . $file, 32))->out(false));
+                        'size' => filesize($rootpath . $file), 'date' => filemtime($rootpath . $file),
+                        'thumbnail' => $OUTPUT->pix_url(file_extension_icon($rootpath . $file, 32))->out(false));
                     } else {
                         if (!empty($path)) {
-                            $current_path = $path . '/' . $file;
+                            $currentpath = $path . '/' . $file;
                         } else {
-                            $current_path = $file;
+                            $currentpath = $file;
                         }
                         $list['list'][] = array('title' => $file, 'children' => array(),
-                        'thumbnail' => $OUTPUT->pix_url('f/folder-32')->out(false), 'path' => $current_path);
+                        'thumbnail' => $OUTPUT->pix_url('f/folder-32')->out(false), 'path' => $currentpath);
                     }
                 }
             }
@@ -140,11 +142,11 @@ class repository_coursefilearea extends repository {
         return $list;
     }
 
-    /**
+    /*
     * Gets a link to the spcified file.
     * @param string $info The file
     * @return The link
-    **/
+    */
     public function get_link($info) {
         global $CFG;
         $course = $this->get_course();
@@ -154,16 +156,16 @@ class repository_coursefilearea extends repository {
         if ($CFG->slasharguments) {
             return file_encode_url($CFG->wwwroot, "/repository/coursefilearea/file.php/" . $course->id . $info);
         } else {
-            return $CFG->wwwroot . "/repository/coursefilearea/file.php?file=/" . $this->checkURL($course->id . $info);
+            return $CFG->wwwroot . "/repository/coursefilearea/file.php?file=/" . $this->check_url($course->id . $info);
         }
     }
 
-    /**
+    /*
     * Encodes the URL to ensure it doesn't get mangled
     * @param string $u The URL to encode
     * @return The encoded URL
-    **/
-    public function checkURL($u) {
+    */
+    public function check_url($u) {
         if (!strpos($u, "/")) {
             return rawurlencode($u);
         }
@@ -175,7 +177,7 @@ class repository_coursefilearea extends repository {
         return substr($f, 0, strlen($f) - 1);
     }
 
-    /**
+    /*
      * Course files area only uses external links, all files need to be live
      *
      * @return int
@@ -188,7 +190,7 @@ class repository_coursefilearea extends repository {
         }
     }
 
-    /**
+    /*
      * Links or copies the file to the main file store
      *
      * @param string $url the url of file
