@@ -23,8 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$plugin->version = 2016041801;
-$plugin->requires = 2013111800;
-$plugin->release = "2016041801";
+defined('MOODLE_INTERNAL') || die();
+
+$plugin->version = 2018050201;
+$plugin->requires = 2018042700;
+$plugin->release = "2018050201";
 $plugin->maturity = MATURITY_STABLE;
 $plugin->component = "repository_coursefilearea";
