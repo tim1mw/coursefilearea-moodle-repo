@@ -115,10 +115,7 @@ if ((count($args) >= 3) and (strtolower($args[1]) == 'moddata')
     and (strtolower($args[2]) == 'assignment')) {
 
     $lifetime = 0; // Do not cache assignments, students may reupload them.
-    if ($args[4] == $USER->id) {
-        // Can view own assignemnt submissions.
-
-    } else {
+    if ($args[4] != $USER->id) {
         $instance = (int)$args[3];
         if (!$cm = get_coursemodule_from_instance('assignment', $instance, $course->id)) {
             not_found($course->id);
