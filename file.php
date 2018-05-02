@@ -84,14 +84,7 @@ if ($args[0] == 'blog') {
 } else if ($course->id != SITEID) {
     require_login($course->id, true, null, false);
 } else if ($CFG->forcelogin) {
-    if (!empty($CFG->sitepolicy) and
-    ($CFG->sitepolicy == $CFG->wwwroot . '/file.php' . $relativepath or
-    $CFG->sitepolicy == $CFG->wwwroot . '/file.php?file=' . $relativepath)) {
-        // Do not require login for policy file.
-
-    } else {
         require_login(0, true, null, false);
-    }
 }
 // Security: only editing teachers can access backups.
 if ((count($args) >= 2) and (strtolower($args[1]) == 'backupdata')) {
@@ -186,10 +179,10 @@ session_write_close(); // Unlock session during fileserving.
 $filename = $args[count($args) - 1];
 send_file($pathname, $filename, $lifetime, $CFG->filteruploadedfiles, false, $forcedownload);
 
-/**
+/*
 * Send a 404 error.
 * @param int $courseid The ID of the current course
-**/
+ */
 function not_found($courseid) {
     global $CFG;
     header('HTTP/1.0 404 not found');
