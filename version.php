@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2018050201;
+$plugin->version = 2018053101;
 $plugin->requires = 2018042700;
-$plugin->release = "2018050201";
+$plugin->release = "2018053101";
 $plugin->maturity = MATURITY_STABLE;
 $plugin->component = "repository_coursefilearea";
