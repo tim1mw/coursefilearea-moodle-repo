@@ -54,7 +54,7 @@ $forcedownload = optional_param('forcedownload', 0, PARAM_BOOL);
 // Relative path must start with '/', because of backup/restore!!!.
 if (!$relativepath) {
     error('No valid arguments supplied or incorrect server configuration');
-} else if ($relativepath{0} != '/') {
+} else if ($relativepath[0] != '/') {
     error('No valid arguments supplied, path does not start with slash!');
 }
 $pathname = $CFG->dataroot . $relativepath;
